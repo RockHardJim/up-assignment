@@ -27,9 +27,11 @@ const RAWG_KEY = '3b7e5b595f9c4da0a223d1e0166fda8b';
 /**
  * database settings
  */
+
 const DB_TYPE = 'mysql';
 const DB_HOST = 'localhost';
 const DB_PORT = 3306;
 const DB_NAME = 'up_assignment';
 const DB_PASSWORD = '';
+const DB_USER = 'root';
 const DB_CHARSET = 'utf8mb4';

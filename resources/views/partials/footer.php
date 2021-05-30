@@ -57,6 +57,7 @@
         // lightbox
         $('[data-lightbox]').lightbox();
     })(jQuery);
+
 </script>
 
 <!-- theme js -->

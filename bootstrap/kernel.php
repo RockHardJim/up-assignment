@@ -44,3 +44,13 @@ foreach (glob(CORE."Helpers/*.php") as $filename)
 {
     include($filename);
 }
+
+
+/**
+ * Require models
+ * check the function on https://www.php.net/manual/en/function.glob.php
+ */
+foreach (glob(CORE."Models/*.php") as $filename)
+{
+    include($filename);
+}

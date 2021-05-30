@@ -19,7 +19,6 @@ class AuthController{
 
 
     public function login(){
-        session_destroy();
         if(Session::userIsLoggedIn()){
             header('Location: '.URL.'dashboard/index');
         }
@@ -27,7 +26,6 @@ class AuthController{
     }
 
     public function register(){
-        session_destroy();
         if(Session::userIsLoggedIn()){
             header('Location: '.URL.'dashboard/index');
         }
@@ -43,10 +41,10 @@ class AuthController{
         $email = strip_tags(Request::post('email'));
         $password = Request::post('password');
 
+
         if(!(new UserModel)->email_exists($email)){
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                (new Session())->write('error', 'Hi it appears the email you have entered is invalid');
-
+                $_SESSION['error'] =  'Hi it appears the email you have entered is invalid';
                 $this->view->output('auth', 'register');
             }else{
 
@@ -56,19 +54,22 @@ class AuthController{
                 $specialChars = preg_match('@[^\w]@', $password);
 
                 if(strlen($password) < 8 || !$number || !$uppercase || !$lowercase || !$specialChars) {
-                    (new Session())->write('error', 'Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter and one special character.');
+                    $_SESSION['error'] = 'Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter and one special character.';
+
                     $this->view->output('auth', 'register');
                 } else {
-                    if((new UserModel())->register_account($name, $surname, $email, password_hash($password, PASSWORD_BCRYPT))){
-                        (new Session())->write('success', 'Hi, We have successfully registered your new account.');
+                    Try {
+                        (new UserModel())->register_account($name, $surname, $email, password_hash($password, PASSWORD_BCRYPT));
+                        $_SESSION['success'] = 'Hi, We have successfully registered your new account.';
+                        $this->view->output('auth', 'register');
+                    }catch(\Exception $e) {
+                        $_SESSION['error'] = $e->getMessage();
                         $this->view->output('auth', 'register');
                     }
                 }
             }
         }
-
-        (new Session())->write('error', 'Hi it appears this account already exists in the platform use a different email');
-
+        $_SESSION['error'] = 'Hi it appears this account already exists in the platform use a different email';
         $this->view->output('auth', 'register');
     }
 }

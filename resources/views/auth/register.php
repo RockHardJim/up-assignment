@@ -8,23 +8,53 @@
                         <h4 class="card-title"><i class="fa fa-user-plus"></i> Register Account</h4>
                     </div>
                     <div class="card-block">
-                        <form href="<?php echo URL; ?>auth/register" method="post">
+                        <form action="<?php echo URL; ?>auth/register_user" method="POST" enctype="multipart/form-data" id="register" name="register">
+
+                            <?php
+                                if(isset($_SESSION['error'])){
+                            ?>
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <div class="p-a-15">
+                                    <h4>Oh snap! You got an error!</h4>
+                                    <p class="m-b-20"><?php echo $_SESSION['error'] ?>.</p>
+                                    <button type="button" class="btn btn-danger" data-dismiss="alert" aria-label="Close">Close Notification</button>
+                                </div>
+                            </div>
+                            <?php
+                                }
+                            ?>
+
+                            <?php
+                            if(isset($_SESSION['success'])){
+                                ?>
+                                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                    <div class="p-a-15">
+                                        <h4>Oh snap! You got an error!</h4>
+                                        <p class="m-b-20"><?php echo $_SESSION['error'] ?>.</p>
+                                        <button type="button" class="btn btn-danger" data-dismiss="alert" aria-label="Close">Close Notification</button>
+                                    </div>
+                                </div>
+                                <?php
+                            }
+                            ?>
+
+
                             <div class="form-group input-icon-left m-b-10">
                                 <i class="fa fa-user"></i>
-                                <input type="text" class="form-control form-control-secondary" placeholder="Name">
+                                <input type="text" name="name" class="form-control form-control-secondary" placeholder="Name">
                             </div>
                             <div class="form-group input-icon-left m-b-10">
                                 <i class="fa fa-user"></i>
-                                <input type="text" class="form-control form-control-secondary" placeholder="Surname">
+                                <input type="text" name="surname" class="form-control form-control-secondary" placeholder="Surname">
                             </div>
                             <div class="form-group input-icon-left m-b-10">
                                 <i class="fa fa-envelope"></i>
-                                <input type="email" class="form-control form-control-secondary" placeholder="Email Address">
+                                <input type="email" name="email" class="form-control form-control-secondary" placeholder="Email Address">
                             </div>
                             <div class="divider"><span>Security</span></div>
                             <div class="form-group input-icon-left m-b-10">
                                 <i class="fa fa-lock"></i>
-                                <input type="password" class="form-control form-control-secondary" placeholder="Password">
+                                <input type="password" name="password" class="form-control form-control-secondary" placeholder="Password">
                             </div>
 
                             <div class="divider"><span>Terms of Service</span></div>
@@ -33,7 +63,7 @@
                                 <span class="custom-control-indicator"></span>
                                 <span class="custom-control-description">Accept <a href="#" data-toggle="modal" data-target="#terms">terms of service</a></span>
                             </label>
-                            <button type="submit" class="btn btn-primary m-t-10 btn-block">Complete Registration</button>
+                            <button type="submit" id="register_button" class="btn btn-primary m-t-10 btn-block">Complete Registration</button>
                         </form>
                     </div>
                 </div>

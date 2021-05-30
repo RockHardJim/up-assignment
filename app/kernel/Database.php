@@ -23,7 +23,7 @@ class Database{
                 $this->database = new PDO(
                     DB_TYPE . ':host=' . DB_HOST . ';dbname=' .
                     DB_NAME . ';port=' . DB_PORT . ';charset=' . DB_CHARSET,
-                    DB_USER, DB_PASS, $options
+                    DB_USER, DB_PASSWORD, $options
                 );
             } catch (PDOException $e) {
 
