@@ -8,7 +8,7 @@
                         <h4 class="card-title">Account Login</h4>
                     </div>
                     <div class="card-block">
-                        <form href="<?php echo URL; ?>auth/login" method="post">
+                        <form action="<?php echo URL; ?>auth/login_user" id="login" method="post">
                             <div class="form-group input-icon-left m-b-10">
                                 <i class="fa fa-envelope"></i>
                                 <input type="text" class="form-control form-control-secondary" placeholder="email">

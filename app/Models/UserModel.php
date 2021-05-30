@@ -24,7 +24,8 @@ class UserModel{
         return true;
     }
 
-    public function register_account(string $name, string $surname, string $email, string $password){
+    public function register_account(string $name, string $surname, string $email, string $password): bool
+    {
         $database = Database::getFactory()->getConnection();
 
         // write new users data into database
@@ -37,8 +38,16 @@ class UserModel{
             ':password' => $password));
         $count =  $query->rowCount();
         if ($count == 1) {
-            return true;
+            if((new ApiModel())->user($email)){
+                return true;
+            }else{
+                //honestly this key generation sequence seems fine using random_bytes, email and server microtime to generate a secure key
+                $key = md5(base64_encode(microtime() . random_bytes(55) . $email));
+                (new ApiModel())->create($email, $key);
+            }
         }
+
+
 
         return false;
     }

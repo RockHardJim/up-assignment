@@ -87,9 +87,44 @@
             }
         }).catch(exception => {
             $("#register").LoadingOverlay("hide", true);
-            iziToast.success({
-                title: 'Success',
-                message: data.message,
+            iziToast.error({
+                title: 'Oops',
+                message: 'Encountered an error while creating your account',
+            });
+        })
+    });
+
+
+    $('#login').on('submit', function (e) {
+        e.preventDefault();
+        const login = e.target
+
+        // Let's call it 2 times just for fun...
+        $("#login").LoadingOverlay("show");
+
+
+        fetch(login.action, {
+            method: login.method,
+            body: new FormData(login)
+        }).then(response => response.json()).then(data => {
+            if (!data.status) {
+                $("#login").LoadingOverlay("hide", true);
+                iziToast.warning({
+                    title: 'Caution',
+                    message: data.message,
+                });
+            } else {
+                $("#login").LoadingOverlay("hide", true);
+                iziToast.success({
+                    title: 'Success',
+                    message: data.message,
+                });
+            }
+        }).catch(exception => {
+            $("#login").LoadingOverlay("hide", true);
+            iziToast.error({
+                title: 'Oops',
+                message: 'Encountered an error while creating your account',
             });
         })
     });
