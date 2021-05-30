@@ -1,11 +1,18 @@
 <?php
 namespace App\kernel;
 
+use Exception;
+use SessionHandler;
+
 /**
  * Class Session, why i have to write this while we have laravel defeats me but this ensures we have secure encrypted session handling code in the platform
  * @package App\kernel
  */
-class Session{
+class Session extends SessionHandler
+{
+
+    //encryption key
+    protected $key;
 
     public function __construct()
     {
@@ -15,6 +22,9 @@ class Session{
         if (! extension_loaded('mbstring')) {
             throw new \RuntimeException("You need the multibytes extension to use UP-Gamerz script");
         }
+
+        session_start();
+
     }
 
 
@@ -23,9 +33,9 @@ class Session{
      * @param $data
      * @param $key
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    private function encrypt_session($data, $key)
+    private function encrypt_session($data, $key): string
     {
         $iv = random_bytes(16); // AES block size in CBC mode
         // Encryption
@@ -51,9 +61,9 @@ class Session{
      * @param $data
      * @param $key
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
-    protected function decrypt_session($data, $key)
+    protected function decrypt_session($data, $key): string
     {
         $hmac       = mb_substr($data, 0, 32, '8bit');
         $iv         = mb_substr($data, 32, 16, '8bit');
@@ -80,7 +90,7 @@ class Session{
 
     /**
      * retrieves encryption keys stored within a secured cookie
-     * @throws \Exception
+     * @throws Exception
      */
     private function get_encryption_keys($name)
     {
@@ -105,5 +115,69 @@ class Session{
             $key = base64_decode($_COOKIE[$name]);
         }
         return $key;
+    }
+
+    public function close(): bool
+    {
+        return parent::close();
+    }
+
+    /**
+     * destroys session
+     * @param string $id
+     * @return bool
+     */
+    public function destroy($id): bool
+    {
+        return parent::destroy($id);
+    }
+
+    public function gc($max_lifetime)
+    {
+        // TODO: Implement gc() method.
+    }
+
+    /**
+     * reads a session yoh was hell making this secure
+     * @param string $path
+     * @param string $name
+     * @return bool
+     * @throws Exception
+     */
+    public function open($path, $name): bool
+    {
+        $this->key = $this->get_encryption_keys('KEY_' . $name);
+        return parent::open($path, $name);
+    }
+
+    /**
+     * reads using php's session handler class
+     * @throws Exception
+     */
+    public function read($id): string
+    {
+        $data = parent::read($id);
+        return empty($data) ? '' : $this->decrypt_session($data, $this->key);
+    }
+
+    /**
+     * writes using PHP's builtin session handler class.
+     * @throws Exception
+     */
+    public function write($id, $data): bool
+    {
+        return parent::write($id, $this->encrypt_session($data, $this->key));
+    }
+
+    /**
+     * @throws Exception
+     */
+    public static function userIsLoggedIn(): bool
+    {
+
+        if (isset($_SESSION['registered'])) {
+            return true;
+        }
+        return false;
     }
 }

@@ -8,7 +8,9 @@
     <title>UP Assignment Gaming Site</title>
     <!-- vendor css -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
-    <link rel="stylesheet" href="<?php echo URL; ?>assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="<?php use App\kernel\Session;
+
+    echo URL; ?>assets/plugins/font-awesome/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo URL; ?>assets/plugins/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo URL; ?>assets/plugins/animate/animate.min.css">
     <!-- plugins css -->
@@ -48,6 +50,14 @@
                 </div>
                 <div class="nav navbar-right">
                     <ul>
+                        <?php
+
+                        if(Session::userIsLoggedIn()){
+                        ?>
+                        <li class="hidden-xs-down"><a href="<?php echo URL; ?>dashboard/index">My Dashboard</a></li>
+                        <?php
+                        }
+                        ?>
                         <li class="hidden-xs-down"><a href="<?php echo URL; ?>auth/login">Login</a></li>
                         <li class="hidden-xs-down"><a href="<?php echo URL; ?>auth/register">Register</a></li>
                     </ul>
