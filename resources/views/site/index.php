@@ -35,26 +35,18 @@
             <?php
             foreach($data['games'] as $game){
             ?>
-            <div class="col-12 col-sm-6 col-md-4">
+            <div class="col-12 col-sm-8 col-md-4">
                 <div class="card card-lg">
                     <div class="card-img">
                         <a href="<?php echo URL; ?>default/game/<?php echo $game['id']; ?>"><img src="<?php echo $game['background_image']; ?>" class="card-img-top" alt="<?php echo $game['name']; ?>"></a>
                         <?php
-                        foreach($game['platforms'] as $platform){
-
-                        ?>
-                        <div class="badge badge-warning"><?php
-                        echo $platform['platform']['name'];
-                        ?></div>
-                        <?php
-                        }
-                        ?>
-                        <div class="card-likes">
-                            <a href="#"><?php echo $game['rating']; ?></a>
-                        </div>
+                            foreach($game['platforms'] as $platform) {
+                                echo $platform['platform']['name'] .', ';
+                            }?>
                     </div>
                     <div class="card-block">
                         <h4 class="card-title"><a href="<?php echo URL; ?>default/game/<?php echo $game['id']; ?>"><?php echo $game['name']; ?></a></h4>
+
                     </div>
                 </div>
             </div>
@@ -63,7 +55,7 @@
             ?>
         </div>
 
-        <div class="text-center"><a class="btn btn-primary btn-shadow btn-rounded btn-effect btn-lg m-t-10" href="games.html">Show More</a></div>
+        <div class="text-center"><a class="btn btn-primary btn-shadow btn-rounded btn-effect btn-lg m-t-10" href="<?php echo URL; ?>default/games">Show More</a></div>
     </div>
 </section>
 

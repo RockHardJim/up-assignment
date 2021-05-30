@@ -48,8 +48,8 @@
                 </div>
                 <div class="nav navbar-right">
                     <ul>
-                        <li class="hidden-xs-down"><a href="login.html">Login</a></li>
-                        <li class="hidden-xs-down"><a href="register.html">Register</a></li>
+                        <li class="hidden-xs-down"><a href="<?php echo URL; ?>auth/login">Login</a></li>
+                        <li class="hidden-xs-down"><a href="<?php echo URL; ?>auth/register">Register</a></li>
                     </ul>
                 </div>
             </div>
