@@ -34,8 +34,7 @@ class AuthController{
 
     public function register_user()
     {
-        session_destroy();
-        // clean the input
+        header('Content-type: application/json');
         $name = strip_tags(Request::post('name'));
         $surname = strip_tags(Request::post('surname'));
         $email = strip_tags(Request::post('email'));
@@ -44,8 +43,7 @@ class AuthController{
 
         if(!(new UserModel)->email_exists($email)){
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $_SESSION['error'] =  'Hi it appears the email you have entered is invalid';
-                $this->view->output('auth', 'register');
+                echo json_encode(['status' => false, 'message' => 'Hi it appears the email you have entered is invalid']);
             }else{
 
                 $number = preg_match('@[0-9]@', $password);
@@ -54,22 +52,20 @@ class AuthController{
                 $specialChars = preg_match('@[^\w]@', $password);
 
                 if(strlen($password) < 8 || !$number || !$uppercase || !$lowercase || !$specialChars) {
-                    $_SESSION['error'] = 'Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter and one special character.';
-
-                    $this->view->output('auth', 'register');
+                    return json_encode(['status' => false, 'message' => 'Password must be at least 8 characters in length and must contain at least one number, one upper case letter, one lower case letter and one special character']);
                 } else {
                     Try {
                         (new UserModel())->register_account($name, $surname, $email, password_hash($password, PASSWORD_BCRYPT));
-                        $_SESSION['success'] = 'Hi, We have successfully registered your new account.';
-                        $this->view->output('auth', 'register');
+
+                        echo json_encode(['status' => true, 'message' => 'Hi, We have successfully registered your new account']);
                     }catch(\Exception $e) {
-                        $_SESSION['error'] = $e->getMessage();
-                        $this->view->output('auth', 'register');
+
+                        echo json_encode(['status' => false, 'message' => $e->getMessage()]);
                     }
                 }
             }
+        }else {
+            echo json_encode(['status' => false, 'message' => 'Hi it appears this account already exists in the platform use a different email']);
         }
-        $_SESSION['error'] = 'Hi it appears this account already exists in the platform use a different email';
-        $this->view->output('auth', 'register');
-    }
+        }
 }

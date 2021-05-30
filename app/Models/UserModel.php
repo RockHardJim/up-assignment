@@ -5,6 +5,10 @@ use App\Kernel\Request;
 use App\kernel\Session;
 use Exception;
 
+/**
+ * Class UserModel
+ * @package App\Models
+ */
 class UserModel{
 
 

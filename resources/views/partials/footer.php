@@ -21,6 +21,8 @@
 <!-- plugins js -->
 <script src="<?php echo URL; ?>assets/plugins/lightbox/lightbox.js"></script>
 <script src="<?php echo URL; ?>assets/plugins/owl-carousel/js/owl.carousel.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/js/iziToast.min.js" integrity="sha512-Zq9o+E00xhhR/7vJ49mxFNJ0KQw1E1TMWkPTxrWcnpfEFDEXgUiwJHIKit93EW/XxE31HSI5GEOW06G6BF1AtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-loading-overlay/2.1.7/loadingoverlay.min.js" integrity="sha512-hktawXAt9BdIaDoaO9DlLp6LYhbHMi5A36LcXQeHgVKUH6kJMOQsAtIw2kmQ9RERDpnSTlafajo6USh9JUXckw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     (function($) {
         "use strict";
@@ -57,6 +59,40 @@
         // lightbox
         $('[data-lightbox]').lightbox();
     })(jQuery);
+
+    $('#register').on('submit', function (e) {
+        e.preventDefault();
+        const register = e.target
+
+        // Let's call it 2 times just for fun...
+        $("#register").LoadingOverlay("show");
+
+
+        fetch(register.action, {
+            method: register.method,
+            body: new FormData(register)
+        }).then(response => response.json()).then(data => {
+            if (!data.status) {
+                $("#register").LoadingOverlay("hide", true);
+                iziToast.warning({
+                    title: 'Caution',
+                    message: data.message,
+                });
+            } else {
+                $("#register").LoadingOverlay("hide", true);
+                iziToast.success({
+                    title: 'Success',
+                    message: data.message,
+                });
+            }
+        }).catch(exception => {
+            $("#register").LoadingOverlay("hide", true);
+            iziToast.success({
+                title: 'Success',
+                message: data.message,
+            });
+        })
+    });
 
 </script>
 
