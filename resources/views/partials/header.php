@@ -16,9 +16,35 @@
     <!-- plugins css -->
     <link href="<?php echo URL; ?>assets/plugins/owl-carousel/css/owl.carousel.min.css" rel="stylesheet">
     <!-- theme css -->
-    <link rel="stylesheet" href="<?php echo URL; ?>assets/css/theme.min.css">
-    <link rel="stylesheet" href="<?php echo URL; ?>assets/css/custom.css">
+    <?php
+
+    if(Session::userIsLoggedIn()){
+
+        $user = $_SESSION['user'];
+
+        if($user['theme'] === 'dark'){
+    ?>
+    <link rel="stylesheet" href="<?php echo URL; ?>assets/css/theme.css">
+
+    <?php
+    }else{
+            ?>
+            <link rel="stylesheet" href="<?php echo URL; ?>assets/css/light.css">
+    <?php
+        }
+    }
+    ?>
+
+    <link rel="stylesheet" href="<?php echo URL; ?>assets/css/theme.css">
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/izitoast/1.4.0/css/iziToast.min.css" integrity="sha512-O03ntXoVqaGUTAeAmvQ2YSzkCvclZEcPQu1eqloPaHfJ5RuNGiS4l+3duaidD801P50J28EHyonCV06CUlTSag==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        .light-mode {
+            background-color: white;
+            color: black;
+        }
+    </style>
 </head>
 <body class="fixed-header">
 <!-- header -->
@@ -53,14 +79,31 @@
                     <ul>
                         <?php
 
-                        if(Session::userIsLoggedIn()){
+                        if(isset($_SESSION['user_logged_in'])){
+                            $user = $_SESSION['user'];
                         ?>
-                        <li class="hidden-xs-down"><a href="<?php echo URL; ?>dashboard/index">My Dashboard</a></li>
+
+                            <ul>
+                                <li class="dropdown dropdown-profile">
+                                    <a href="login.html" data-toggle="dropdown"><img src="<?php echo 'https://www.gravatar.com/avatar/"' . md5( strtolower( trim( $user->email ) ) ); ?>" alt=""> <span><?php echo ucfirst($user->name) .' ' . ucfirst($user->surname) ?></span></a>
+                                    <div class="dropdown-menu dropdown-menu-right">
+                                        <a class="dropdown-item" href="<?php echo URL; ?>dashboard/index"><i class="fa fa-user"></i> My Dashboard</a>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-envelope-open"></i> Inbox</a>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-heart"></i> Games</a>
+                                        <a class="dropdown-item" href="#"><i class="fa fa-cog"></i> Settings</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a class="dropdown-item" href="<?php echo URL; ?>auth/logout"><i class="fa fa-sign-out"></i> Logout</a>
+                                    </div>
+                                </li>
+                            </ul>
                         <?php
-                        }
+                        }else{
                         ?>
                         <li class="hidden-xs-down"><a href="<?php echo URL; ?>auth/login">Login</a></li>
                         <li class="hidden-xs-down"><a href="<?php echo URL; ?>auth/register">Register</a></li>
+                        <?php
+                        }
+                        ?>
                     </ul>
                 </div>
             </div>

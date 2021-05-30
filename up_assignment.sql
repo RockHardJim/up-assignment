@@ -20,12 +20,12 @@ USE `up_assignment`;
 CREATE TABLE IF NOT EXISTS `api_keys` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `token` varchar(255) COLLATE utf8mb4_bin NOT NULL,
-  `limit` bigint(10) NOT NULL DEFAULT '20000',
+  `api_limit` bigint(10) NOT NULL DEFAULT '20000',
   `user` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Dumping data for table up_assignment.api_keys: ~1 rows (approximately)
+-- Dumping data for table up_assignment.api_keys: ~0 rows (approximately)
 /*!40000 ALTER TABLE `api_keys` DISABLE KEYS */;
 /*!40000 ALTER TABLE `api_keys` ENABLE KEYS */;
 
@@ -50,9 +50,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
--- Dumping data for table up_assignment.users: ~0 rows (approximately)
+-- Dumping data for table up_assignment.users: ~1 rows (approximately)
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 
@@ -63,7 +63,7 @@ CREATE TABLE IF NOT EXISTS `user_preferences` (
   `privacy` enum('Y','N') COLLATE utf8mb4_bin NOT NULL DEFAULT 'Y',
   `theme` enum('Light','Dark') COLLATE utf8mb4_bin NOT NULL DEFAULT 'Dark',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin;
 
 -- Dumping data for table up_assignment.user_preferences: ~0 rows (approximately)
 /*!40000 ALTER TABLE `user_preferences` DISABLE KEYS */;

@@ -11,11 +11,11 @@
                         <form action="<?php echo URL; ?>auth/login_user" id="login" method="post">
                             <div class="form-group input-icon-left m-b-10">
                                 <i class="fa fa-envelope"></i>
-                                <input type="text" class="form-control form-control-secondary" placeholder="email">
+                                <input type="text" name="email" class="form-control form-control-secondary" placeholder="email">
                             </div>
                             <div class="form-group input-icon-left m-b-10">
                                 <i class="fa fa-lock"></i>
-                                <input type="password" class="form-control form-control-secondary" placeholder="Password">
+                                <input type="password" name="password" class="form-control form-control-secondary" placeholder="Password">
                             </div>
                             <button type="submit" class="btn btn-primary m-t-10 btn-block">Login</button>
                         </form>

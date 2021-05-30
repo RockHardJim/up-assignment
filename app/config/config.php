@@ -21,7 +21,7 @@ const PROTOCOL = '//';
 define("DOMAIN", $_SERVER['HTTP_HOST']);
 define('SUB_FOLDER', str_replace(PUBLIC_FOLDER, '', dirname($_SERVER['SCRIPT_NAME'])));
 // define your application url here
-const URL = 'http://up.test:8080/';
+const URL = 'http://localhost:8080/up/';
 const RAWG_KEY = '3b7e5b595f9c4da0a223d1e0166fda8b';
 
 /**

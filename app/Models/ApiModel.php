@@ -48,6 +48,36 @@ class ApiModel{
     }
 
     public function get_user_key($email){
+        $database = Database::getFactory()->getConnection();
 
+        $query = $database->prepare("SELECT id, token, api_limit, user FROM api_keys WHERE user = :user LIMIT 1");
+        $query->execute(array(':user' => $email));
+        if ($query->rowCount() > 0) {
+            return $query->fetch();
+        }
+        return false;
+    }
+
+    public function get_key_details($key){
+        $database = Database::getFactory()->getConnection();
+
+        $query = $database->prepare("SELECT * FROM api_keys WHERE token = :token LIMIT 1");
+        $query->execute(array(':token' => $key));
+        if ($query->rowCount() > 0) {
+            return $query->fetch();
+        }
+        return false;
+    }
+
+    public function decrement_limit($key, $limit){
+        $database = Database::getFactory()->getConnection();
+
+        $query = $database->prepare("UPDATE api_keys SET api_limit = :api_limit WHERE token = :token LIMIT 1");
+        $query->execute(array(':api_limit' => $limit, ':token' => $key));
+        $count = $query->rowCount();
+        if ($count == 1) {
+            return true;
+        }
+        return false;
     }
 }

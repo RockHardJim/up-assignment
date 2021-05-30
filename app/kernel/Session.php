@@ -23,8 +23,6 @@ class Session extends SessionHandler
             throw new \RuntimeException("You need the multibytes extension to use UP-Gamerz script");
         }
 
-        session_start();
-
     }
 
 

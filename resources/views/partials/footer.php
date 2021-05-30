@@ -124,7 +124,11 @@
             $("#login").LoadingOverlay("hide", true);
             iziToast.error({
                 title: 'Oops',
-                message: 'Encountered an error while creating your account',
+                message: 'Encountered an error while logging you in',
+
+                onClosing: function(){
+                    window.location.assign('<?php echo URL; ?>dashboard/index')
+                }
             });
         })
     });

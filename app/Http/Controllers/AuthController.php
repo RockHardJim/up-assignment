@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Kernel\Request;
 use App\kernel\Session;
 use App\kernel\View;
+use App\Models\ApiModel;
 use App\Models\UserModel;
 
 class AuthController{
@@ -19,17 +20,57 @@ class AuthController{
 
 
     public function login(){
-        if(Session::userIsLoggedIn()){
+        if(isset($_SESSION['user_logged_in'])){
             header('Location: '.URL.'dashboard/index');
         }
         $this->view->output('auth', 'login');
     }
 
+    public function logout(){
+        if(isset($_SESSION['user_logged_in'])){
+
+            session_destroy();
+            header('Location: '.URL.'auth/login');
+
+            header('Location: '.URL.'dashboard/index');
+        }
+        header('Location: '.URL.'auth/login');
+    }
+
     public function register(){
-        if(Session::userIsLoggedIn()){
+        if(isset($_SESSION['user_logged_in'])){
             header('Location: '.URL.'dashboard/index');
         }
         $this->view->output('auth', 'register');
+    }
+
+    public function login_user(){
+        header('Content-type: application/json');
+        $email = strip_tags(Request::post('email'));
+        $password = Request::post('password');
+
+        if(empty($email) || empty($password)){
+            echo json_encode(['status' => false, 'message' => 'Hi it appears the email or password you have entered is invalid']);
+        } else {
+            if(!(new UserModel)->email_exists($email)){
+                echo json_encode(['status' => false, 'message' => 'Hi we could not find the user account your have submitted']);
+            } else {
+                $user = (new UserModel())->get_user($email);
+
+                if(password_verify($password, $user->password)){
+                    $api_key = (new ApiModel())->get_user_key($email);
+                    $_SESSION['user_logged_in'] = true;
+                    $_SESSION['api_key'] = $api_key;
+                    $_SESSION['user'] = $user;
+                    echo json_encode(['status' => true, 'message' => 'Hi we have successfully logged you in please wait while we redirect you']);
+                }else{
+                    echo json_encode(['status' => false, 'message' => 'Invalid password entered please try again later']);
+                }
+            }
+
+        }
+
+
     }
 
     public function register_user()
